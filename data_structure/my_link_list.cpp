@@ -29,6 +29,7 @@ template <class T> class MyLinkList {
         T get(int i);
         void insert(T t);
         void insert(int i, T t);
+        void remove();
         void remove(int i);
         int index_of(T t);
         void show();
@@ -50,7 +51,6 @@ template <class T> void MyLinkList<T>::clear() {
     while(p != nullptr){
        p = p->next;
        delete d;
-       N--;
        d = p;
     }
 }
@@ -70,63 +70,64 @@ template <class T> T MyLinkList<T>::get(int i) {
 }
 
 template <class T> void MyLinkList<T>::insert(T t) {
-    if(N>=MAX_CAP){
-        cout << "列表长度以达到最大限值，无法添加！！！"<<endl;
-        throw  "列表长度以达到最大限值，无法添加！！！";
-    }
-    if(N++ == 0){
-        head = new MyLinkNode<T>(t);
-        return;
-    }
-    MyLinkNode<T> *p = head;
-    while(p->next != nullptr){p = p->next;}
-    p->next = new MyLinkNode<T>(t);
+    insert(length(),t);
 }
 
 template <class T> void MyLinkList<T>::insert(int i, T t) {
     if(N>=MAX_CAP){
         cout << "列表长度以达到最大限值，无法添加！！！"<<endl;
         throw  "列表长度以达到最大限值，无法添加！！！";
+        return;
     }
-    if(i > N){
-        cout << "超出范围"<<endl;
-        throw "超出范围";
-    }
-    MyLinkNode<T> *pp = nullptr;
-    MyLinkNode<T> *p = head;
-    for(int j=0; j < i; j++){
-        pp = p;
-        p = p->next; 
-    }
-    if (pp == nullptr){
-        head = new MyLinkNode<T>(t);
-        head->next = p;
-    }else{
-        pp->next = new MyLinkNode<T>(t);\
-        pp->next->next = p;
-    }
-    N++;
-}
-
-template <class T> void MyLinkList<T>::remove(int i) {
-    if(i > N-1){
+    if(i>N || i<0){
         cout << "超出范围"<<endl;
         throw "超出范围";
         return;
     }
-    MyLinkNode<T> *pp = nullptr;
-    MyLinkNode<T> *p = head;
-    for(int j=0; j < i; j++){
-        pp = p;
-        p = p->next; 
-    }
-    if (pp == nullptr){
-        head = p->next;
-        delete p;
+    MyLinkNode<T> *tmp = new MyLinkNode<T>(t);
+    // 长度为零，并且在0处插入。
+    if(i==0 && N==0){
+        head = tmp;
+    // 长度不为零，在0处插入。
+    }else if(i==0){
+        tmp->next = head;
+        head = tmp;
+    // 长度不为零，不在0处插入。
     }else{
-        pp->next = p->next;
-        pp->next->next = p;
-        delete p;
+        MyLinkNode<T> *p = head;
+        for(int j = 0; j < i-1; j++){
+            p = p->next;
+        }
+        tmp->next = p->next;
+        p->next = tmp;
+    }
+    N++;
+}
+
+template <class T> void MyLinkList<T>::remove() {
+    remove(length()-1);
+}
+template <class T> void MyLinkList<T>::remove(int i) {
+    if(i>N-1 || i<0){
+        cout << "超出范围"<<endl;
+        throw "超出范围";
+        return;
+    }
+    if(i==0 && N==1){
+        delete head;
+        head = nullptr;
+    }else if(i==0){
+        MyLinkNode<T> *tmp = head;
+        head = head->next;
+        delete tmp;
+    }else{
+        MyLinkNode<T> *p = head;
+        for(int j = 0; j < i-1; j++){
+            p = p->next;
+        }
+        MyLinkNode<T> *tmp = p->next;
+        p->next = tmp->next;
+        delete tmp;
     }
     N--;
 }
@@ -139,9 +140,9 @@ template <class T> int MyLinkList<T>::index_of(T t) {
 }
 
 template <class T> void MyLinkList<T>::show() {
-    cout<<"\n列表长度："<<N<<endl;
+    cout<<"列表长度："<<N<<endl;
     if(head==nullptr){
-        cout<<"\n[异常]列表为空。\n"<<endl;
+        cout<<"列表为空。\n"<<endl;
         return;
     }
     cout<<"列表内容："<<endl;
@@ -154,17 +155,38 @@ template <class T> void MyLinkList<T>::show() {
 int main(){
     MyLinkList<int> ml;
     ml.show();
+
     for (int i = 0; i < 64; i++) {
         ml.insert(i);
     }
     ml.show();
-    cout << "第一个2在：" << ml.get(2) << endl;
-    ml.insert(0, 1);
-    cout<<"再插入1个数"<<endl;
+    
+    cout << "第一个2的位置是：" << ml.get(2) << '\n' << endl;
+    
+    cout<<"在0处插入"<<endl;
+    ml.insert(0, 666);
     ml.show();
-    cout<<"删除1个数"<<endl;
+    
+    cout<<"在中间插入"<<endl;
+    ml.insert(2, 666);
+    ml.show();
+
+    cout<<"在末尾插入"<<endl;
+    ml.insert(666);
+    ml.show();
+   
+    cout<<"在末尾删除"<<endl;
+    ml.remove();
+    ml.show();
+
+    cout<<"在中间删除"<<endl;
+    ml.remove(2);
+    ml.show();
+
+    cout<<"在0处删除"<<endl;
     ml.remove(0);
     ml.show();
+
     try{ml.insert(65537, 2);}catch(...){
         cout<<"出现异常。"<<endl;
     }
