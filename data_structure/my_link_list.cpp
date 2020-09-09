@@ -139,16 +139,16 @@ template <class T> int MyLinkList<T>::index_of(T t) {
 }
 
 template <class T> void MyLinkList<T>::show() {
-    cout<<"列表长度："<<N<<endl;
+    cout<<"\n列表长度："<<N<<endl;
     if(head==nullptr){
-        cout<<"列表为空。"<<endl;
+        cout<<"\n[异常]列表为空。\n"<<endl;
         return;
     }
     cout<<"列表内容："<<endl;
     for(MyLinkNode<T> *p = head; p!=nullptr; p=p->next){
         cout<<p->element<<"->";
     }
-    cout<<"null"<<endl;
+    cout<<"null"<<"\n"<<endl;
 }
 
 int main(){
