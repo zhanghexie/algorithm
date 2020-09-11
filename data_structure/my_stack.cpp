@@ -12,6 +12,7 @@ template <class T> class MyStack {
     public:
         MyStack();
         int size();
+        bool is_empty();
         void push(T t);
         T pop();
         void show();
@@ -22,10 +23,15 @@ template <class T> class MyStack {
 };
 
 template <class T> MyStack<T>::MyStack() {
+    N = 0;
 }
 
 template <class T> int MyStack<T>::size() {
     return N;
+}
+
+template <class T> bool MyStack<T>::is_empty(){
+    return 0 == N;
 }
 
 template <class T> void MyStack<T>::push(T t) {
