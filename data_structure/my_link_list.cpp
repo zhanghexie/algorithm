@@ -6,39 +6,17 @@
 #include <iostream>
 #include <stdexcept>
 #define MAX_CAP 65536
+#include "my_link_list.h"
 using namespace std;
 
-template<class T>
-class MyLinkNode{
-    public:
-        T element;
-        MyLinkNode* next;
-        MyLinkNode() { this->next = nullptr; }
-        MyLinkNode(T element) { 
+
+template<class T> MyLinkNode<T>::MyLinkNode(){ 
+        this->next = nullptr; 
+    }
+template<class T> MyLinkNode<T>::MyLinkNode(T element) { 
             this->next = nullptr; 
             this->element = element; 
         }
-};
-
-template <class T> class MyLinkList {
-    public:
-        MyLinkList();
-        void clear();
-        bool is_empty();
-        int length();
-        T get(int i);
-        void insert(T t);
-        void insert(int i, T t);
-        void remove();
-        void remove(int i);
-        int index_of(T t);
-        void show();
-
-    private:
-        MyLinkNode<T> *head;
-        int N;
-};
-
 template <class T> MyLinkList<T>::MyLinkList() {
     N = 0;
     head = nullptr;
@@ -152,6 +130,7 @@ template <class T> void MyLinkList<T>::show() {
     cout<<"null"<<"\n"<<endl;
 }
 
+#ifdef RUN_MY_LINK_LIST
 int main(){
     MyLinkList<int> ml;
     ml.show();
@@ -193,3 +172,4 @@ int main(){
     cout<<"执行完毕"<<endl;
     return 0;
 }
+#endif

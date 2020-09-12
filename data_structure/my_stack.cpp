@@ -5,25 +5,13 @@
 
 #include <iostream>
 #include <stdexcept>
+#include "my_stack.h"
 #define MAX_CAP 65536
 using namespace std;
 
-template <class T> class MyStack {
-    public:
-        MyStack();
-        int size();
-        bool is_empty();
-        void push(T t);
-        T pop();
-        void show();
-
-    private:
-        int N;
-        T elements[MAX_CAP];
-};
-
 template <class T> MyStack<T>::MyStack() {
     N = 0;
+    elements = new T[MAX_CAP];
 }
 
 template <class T> int MyStack<T>::size() {
@@ -54,7 +42,7 @@ template <class T> T MyStack<T>::pop() {
     }
 }
 template <class T> void MyStack<T>::show() {
-    cout << "栈容量上限：" << sizeof(elements) / sizeof(*elements) << endl;
+    cout << "栈容量上限：" << MAX_CAP << endl;
     cout << "栈已用大小：" << N << endl;
     if(N==0){
         cout << "栈为空。\n" << endl;
