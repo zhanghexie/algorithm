@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <stdexcept>
-#include "my_link_list.cpp"
+#include "my_link_list.h"
 #define MAX_CAP 65536
 
 using namespace std;
